@@ -31,6 +31,25 @@ html_content = """<!DOCTYPE html>
             display: flex;
         }
 
+        /* Modal / Welcome Banner Styling */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.7); display: flex;
+            align-items: center; justify-content: center; z-index: 1000;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            backdrop-filter: blur(3px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: var(--surface); padding: 3rem; border-radius: 1rem;
+            max-width: 500px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateY(-20px); transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-title { font-size: 1.8rem; color: var(--primary); margin-bottom: 1rem; }
+        .modal-text { color: var(--text-light); margin-bottom: 2rem; font-size: 1.05rem; }
+        .modal-btn { width: auto; display: inline-block; padding: 0.75rem 2rem; font-size: 1.1rem;}
+
         /* Sidebar Navigation */
         nav {
             width: 280px;
@@ -292,6 +311,37 @@ html_content = """<!DOCTYPE html>
             display: none;
         }
 
+        /* Team Section Styling */
+        .team-list {
+            list-style: none;
+            padding-left: 0;
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .team-list li {
+            font-weight: 600;
+            color: var(--primary);
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .team-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .team-list .role {
+            font-weight: 400;
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+
         @media (max-width: 768px) {
             body { flex-direction: column; }
             nav { width: 100%; height: auto; position: relative; }
@@ -301,6 +351,15 @@ html_content = """<!DOCTYPE html>
     </style>
 </head>
 <body>
+
+    <!-- Modal de Boas-vindas -->
+    <div class="modal-overlay" id="welcomeModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Olá, seja bem-vindo(a)! 👋</h2>
+            <p class="modal-text">Agradecemos por acessar nosso site. Preparamos este ambiente interativo com muita dedicação para que você entenda de forma prática como funcionam os investimentos em Renda Fixa Pública e Privada.</p>
+            <button class="btn modal-btn" onclick="closeModal()">Começar a explorar</button>
+        </div>
+    </div>
 
     <nav>
         <h1>Grupo 2</h1>
@@ -320,6 +379,7 @@ html_content = """<!DOCTYPE html>
             <li><a href="#sec12">12. Simulação Prática</a></li>
             <li><a href="#sec13">13. Atualidades</a></li>
             <li><a href="#sec14">14. Desafio Interativo</a></li>
+            <li><a href="#sec15">15. Integrantes do Grupo</a></li>
         </ul>
     </nav>
 
@@ -475,7 +535,6 @@ html_content = """<!DOCTYPE html>
             <p>Responda às questões rápidas para testar a absorção do conteúdo pela turma durante a apresentação.</p>
             
             <div class="quiz-container">
-                <!-- Questão 1 -->
                 <div class="quiz-item">
                     <div class="quiz-question">1. Qual a melhor opção para a estruturação de uma Reserva de Emergência (foco em curtíssimo prazo e liquidez imediata)?</div>
                     <div class="quiz-options">
@@ -486,7 +545,6 @@ html_content = """<!DOCTYPE html>
                     <div class="quiz-feedback" id="feedback-q1"></div>
                 </div>
 
-                <!-- Questão 2 -->
                 <div class="quiz-item">
                     <div class="quiz-question">2. Para um horizonte de investimento de Longo Prazo (proteção patrimonial sistemática contra ciclos inflacionários), qual é o título ideal?</div>
                     <div class="quiz-options">
@@ -497,7 +555,6 @@ html_content = """<!DOCTYPE html>
                     <div class="quiz-feedback" id="feedback-q2"></div>
                 </div>
 
-                <!-- Questão 3 (Nova) -->
                 <div class="quiz-item">
                     <div class="quiz-question">3. Em relação à tributação, qual destes investimentos possui o grande benefício da ISENÇÃO de Imposto de Renda para pessoas físicas?</div>
                     <div class="quiz-options">
@@ -508,7 +565,6 @@ html_content = """<!DOCTYPE html>
                     <div class="quiz-feedback" id="feedback-q3"></div>
                 </div>
 
-                <!-- Questão 4 (Nova) -->
                 <div class="quiz-item">
                     <div class="quiz-question">4. Se o banco emissor de uma LCI ou LCA falir, o que acontece com o seu dinheiro?</div>
                     <div class="quiz-options">
@@ -519,7 +575,6 @@ html_content = """<!DOCTYPE html>
                     <div class="quiz-feedback" id="feedback-q4"></div>
                 </div>
 
-                <!-- Questão 5 (Nova) -->
                 <div class="quiz-item">
                     <div class="quiz-question">5. O que pode acontecer se você resgatar um Tesouro Prefixado ANTES da data de vencimento?</div>
                     <div class="quiz-options">
@@ -531,38 +586,59 @@ html_content = """<!DOCTYPE html>
                 </div>
             </div>
         </section>
+
+        <!-- Nova Seção: Integrantes do Grupo -->
+        <section id="sec15">
+            <h3><span>15.</span> Integrantes do Grupo</h3>
+            <p>Nosso projeto foi idealizado e construído com dedicação pela equipe abaixo. Agradecemos a atenção de todos na apresentação!</p>
+            <ul class="team-list">
+                <li>👤 Pedro <span class="role">- (Insira a função ou matrícula)</span></li>
+                <li>👤 [Nome do Integrante 2] <span class="role">- (Insira a função ou matrícula)</span></li>
+                <li>👤 [Nome do Integrante 3] <span class="role">- (Insira a função ou matrícula)</span></li>
+                <li>👤 [Nome do Integrante 4] <span class="role">- (Insira a função ou matrícula)</span></li>
+            </ul>
+        </section>
     </main>
 
     <script>
+        // Lógica do Modal de Boas-vindas
+        window.onload = function() {
+            runSimulation();
+            
+            // Um pequeno delay para o modal aparecer de forma suave após o carregamento da página
+            setTimeout(() => {
+                document.getElementById('welcomeModal').classList.add('active');
+            }, 500);
+        };
+
+        function closeModal() {
+            document.getElementById('welcomeModal').classList.remove('active');
+        }
+
+        // Lógica do Simulador
         function runSimulation() {
             const capital = parseFloat(document.getElementById('calc-capital').value) || 0;
             const months = parseInt(document.getElementById('calc-months').value) || 0;
             const annualSelic = (parseFloat(document.getElementById('calc-selic').value) || 0) / 100;
 
-            // Determinar alíquota do IR com base nos meses
             let irRate = 0.15;
             if (months <= 6) irRate = 0.225;
             else if (months <= 12) irRate = 0.20;
             else if (months <= 24) irRate = 0.175;
 
-            // Cálculo composto simplificado mensalizado
             const monthlySelic = Math.pow(1 + annualSelic, 1/12) - 1;
             
-            // 1. Tesouro Selic
             const grossTesouro = capital * Math.pow(1 + monthlySelic, months);
             const profitTesouro = grossTesouro - capital;
             const netTesouro = capital + (profitTesouro * (1 - irRate));
 
-            // 2. LCI (90% do CDI/Selic) - Isento de IR
             const annualLci = annualSelic * 0.90;
             const monthlyLci = Math.pow(1 + annualLci, 1/12) - 1;
             const netLci = capital * Math.pow(1 + monthlyLci, months);
 
-            // Atualização UI
             document.getElementById('res-tesouro').innerText = netTesouro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             document.getElementById('res-lci').innerText = netLci.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-            // Highlight do vencedor
             const cardT = document.getElementById('card-tesouro');
             const cardL = document.getElementById('card-lci');
             cardT.classList.remove('winner');
@@ -575,15 +651,14 @@ html_content = """<!DOCTYPE html>
             }
         }
 
+        // Lógica do Quiz
         function checkQuiz(btnElement, isCorrect, quizId, feedbackText) {
             const parent = btnElement.parentElement;
             const options = parent.querySelectorAll('.quiz-opt');
             
-            // Desabilita todas as opções e acha a correta para destacar depois
             options.forEach(opt => {
                 opt.disabled = true;
                 opt.classList.remove('correct', 'incorrect');
-                // Se a opção contiver 'true' nos parâmetros da função onclick, ela é a resposta certa
                 if (opt.getAttribute('onclick').includes('true,')) {
                     opt.dataset.isAnswer = 'true';
                 }
@@ -593,7 +668,6 @@ html_content = """<!DOCTYPE html>
                 btnElement.classList.add('correct');
             } else {
                 btnElement.classList.add('incorrect');
-                // Mostra ao usuário qual era a certa
                 options.forEach(opt => {
                     if (opt.dataset.isAnswer === 'true') {
                         opt.classList.add('correct');
@@ -606,9 +680,6 @@ html_content = """<!DOCTYPE html>
             fb.style.display = 'block';
             fb.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
         }
-
-        // Executar simulação inicial ao carregar a página
-        window.onload = runSimulation;
     </script>
 </body>
 </html>
