@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html_content = """<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -146,16 +146,6 @@
 
         strong {
             color: var(--primary);
-        }
-
-        /* Highlight Boxes */
-        .badge {
-            background-color: #eff6ff;
-            color: var(--secondary);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.25rem;
-            font-weight: 600;
-            font-size: 0.85rem;
         }
 
         /* Interactive Simulator */
@@ -481,10 +471,11 @@
         </section>
 
         <section id="sec14">
-            <h3><span>14.</span> Desafio Interativo: Curto vs Longo Prazo</h3>
+            <h3><span>14.</span> Desafio Interativo: Teste seus conhecimentos</h3>
             <p>Responda às questões rápidas para testar a absorção do conteúdo pela turma durante a apresentação.</p>
             
             <div class="quiz-container">
+                <!-- Questão 1 -->
                 <div class="quiz-item">
                     <div class="quiz-question">1. Qual a melhor opção para a estruturação de uma Reserva de Emergência (foco em curtíssimo prazo e liquidez imediata)?</div>
                     <div class="quiz-options">
@@ -495,6 +486,7 @@
                     <div class="quiz-feedback" id="feedback-q1"></div>
                 </div>
 
+                <!-- Questão 2 -->
                 <div class="quiz-item">
                     <div class="quiz-question">2. Para um horizonte de investimento de Longo Prazo (proteção patrimonial sistemática contra ciclos inflacionários), qual é o título ideal?</div>
                     <div class="quiz-options">
@@ -503,6 +495,39 @@
                         <button class="quiz-opt" onclick="checkQuiz(this, false, 'q2', 'Incorreto. Embora estável, o Selic acompanha os juros presentes e não blinda diretamente o ganho real de longo prazo contra picos inflacionários.')">Tesouro Selic</button>
                     </div>
                     <div class="quiz-feedback" id="feedback-q2"></div>
+                </div>
+
+                <!-- Questão 3 (Nova) -->
+                <div class="quiz-item">
+                    <div class="quiz-question">3. Em relação à tributação, qual destes investimentos possui o grande benefício da ISENÇÃO de Imposto de Renda para pessoas físicas?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q3', 'Incorreto. Todos os títulos do Tesouro Direto sofrem cobrança de Imposto de Renda sobre o lucro.')">Tesouro Prefixado e Tesouro Selic</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, true, 'q3', 'Perfeito! As LCIs e LCAs são isentas de Imposto de Renda para pessoas físicas, o que turbina a rentabilidade final.')">LCI e LCA</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q3', 'Incorreto. A isenção se aplica apenas às letras de crédito (LCI/LCA), e não aos títulos do governo.')">Todos eles são isentos</button>
+                    </div>
+                    <div class="quiz-feedback" id="feedback-q3"></div>
+                </div>
+
+                <!-- Questão 4 (Nova) -->
+                <div class="quiz-item">
+                    <div class="quiz-question">4. Se o banco emissor de uma LCI ou LCA falir, o que acontece com o seu dinheiro?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q4', 'Incorreto. O Tesouro Nacional garante apenas os títulos públicos (Tesouro Direto), não os de bancos privados.')">O Tesouro Nacional devolve o valor integralmente.</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q4', 'Incorreto. Existe uma proteção muito forte para o investidor neste caso.')">Você perde todo o capital investido imediatamente.</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, true, 'q4', 'Exato! O FGC (Fundo Garantidor de Créditos) protege o investidor devolvendo até R$ 250 mil por instituição.')">Você é ressarcido pelo Fundo Garantidor de Créditos (FGC).</button>
+                    </div>
+                    <div class="quiz-feedback" id="feedback-q4"></div>
+                </div>
+
+                <!-- Questão 5 (Nova) -->
+                <div class="quiz-item">
+                    <div class="quiz-question">5. O que pode acontecer se você resgatar um Tesouro Prefixado ANTES da data de vencimento?</div>
+                    <div class="quiz-options">
+                        <button class="quiz-opt" onclick="checkQuiz(this, true, 'q5', 'Correto! Devido à Marcação a Mercado, o título é vendido pelo preço do dia, o que pode gerar lucro ou prejuízo dependendo de como estão os juros na economia.')">Pode ter perdas financeiras ou ganhos extras devido à Marcação a Mercado.</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q5', 'Incorreto. A taxa combinada só é garantida se você segurar o título até o dia do vencimento.')">Você recebe exatamente a rentabilidade combinada proporcional aos dias investidos.</button>
+                        <button class="quiz-opt" onclick="checkQuiz(this, false, 'q5', 'Incorreto. A Receita Federal cobra IR, mas não confisca o lucro como penalidade.')">A Receita Federal confisca todo o lucro como penalidade.</button>
+                    </div>
+                    <div class="quiz-feedback" id="feedback-q5"></div>
                 </div>
             </div>
         </section>
@@ -554,24 +579,29 @@
             const parent = btnElement.parentElement;
             const options = parent.querySelectorAll('.quiz-opt');
             
+            // Desabilita todas as opções e acha a correta para destacar depois
             options.forEach(opt => {
                 opt.disabled = true;
                 opt.classList.remove('correct', 'incorrect');
+                // Se a opção contiver 'true' nos parâmetros da função onclick, ela é a resposta certa
+                if (opt.getAttribute('onclick').includes('true,')) {
+                    opt.dataset.isAnswer = 'true';
+                }
             });
 
             if (isCorrect) {
                 btnElement.classList.add('correct');
             } else {
                 btnElement.classList.add('incorrect');
-                // Achar a correta para mostrar
+                // Mostra ao usuário qual era a certa
                 options.forEach(opt => {
-                    if (opt.innerText === 'Tesouro Selic' || opt.innerText === 'Tesouro IPCA+') {
+                    if (opt.dataset.isAnswer === 'true') {
                         opt.classList.add('correct');
                     }
                 });
             }
 
-            const fb = document.getElementById(`feedback-q1` === `feedback-${quizId}` ? 'feedback-q1' : `feedback-${quizId}`);
+            const fb = document.getElementById('feedback-' + quizId);
             fb.innerText = feedbackText;
             fb.style.display = 'block';
             fb.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
